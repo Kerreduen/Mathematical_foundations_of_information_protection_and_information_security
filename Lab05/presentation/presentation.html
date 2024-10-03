@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Евдокимов Максим Михайлович. Группа - НФИмд-01-24." />
+  <title>Лабораторная работа №5: Презентация.</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  
+  
+  <span class="citation"
+  data-cites="ignorenonframefalse">@ignorenonframefalse</span>
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №5: Презентация.</h1>
+<p class="subtitle">вероятностные алгоритмы проверки чисел на
+простоту.</p>
+<p class="author">Евдокимов Максим Михайлович. Группа - НФИмд-01-24.</p>
+<p class="date">02 октября, 2024, Москва, Россия</p>
+</header>
+<h1 id="цели-и-задачи-работы">Цели и задачи работы</h1>
+<h2 id="цель-лабораторной-работы">Цель лабораторной работы</h2>
+<p>Вероятностные алгоритмы проверки чисел на простоту</p>
+<h2 id="задание">Задание</h2>
+<ol type="1">
+<li>Реализовать алгоритм теста Ферма.</li>
+<li>Реализовать алгоритм вычисления символа Якоби.</li>
+<li>Реализовать алгоритм теста Соловэя-Штрассена.</li>
+<li>Реализовать алгоритм теста Миллера-Рабина.</li>
+</ol>
+<h2 id="тест-ферма">Тест Ферма</h2>
+<p>Тест Ферма основан на малой теореме Ферма, которая утверждает, что
+если n — простое число, то для любого целого <span
+class="math inline"><em>a</em></span> такого, что <span
+class="math inline">1 ≤ <em>a</em> &lt; <em>n</em></span>, выполняется:
+<span
+class="math inline"><em>a</em><sup><em>n</em> − 1</sup> ≡ 1 mod  <em>n</em></span></p>
+<h3 id="алгоритм-действий">Алгоритм действий:</h3>
+<ol type="1">
+<li>Выбрать случайное число <span class="math inline"><em>a</em></span>
+такое, что <span
+class="math inline">1 ≤ <em>a</em> &lt; <em>n</em></span>.</li>
+<li>Вычислить <span
+class="math inline"><em>a</em><sup><em>n</em> − 1</sup> mod  <em>n</em></span>.</li>
+<li>Если <span
+class="math inline"><em>a</em><sup><em>n</em> − 1</sup> ≢ 1 mod  <em>n</em></span>,
+то <span class="math inline"><em>n</em></span> — составное.</li>
+<li>Если <span
+class="math inline"><em>a</em><sup><em>n</em> − 1</sup> ≡ 1 mod  <em>n</em></span>$,
+то <span class="math inline"><em>n</em></span> вероятно простое.</li>
+</ol>
+<h3 id="сравнение">Сравнение:</h3>
+<ul>
+<li><strong>Плюсы:</strong> Простой и быстрый.</li>
+<li><strong>Минусы:</strong> Подвержен “числам Кармайкла” составным
+числам, которые проходят тест для всех <span
+class="math inline"><em>a</em></span>.</li>
+</ul>
+<h2 id="символ-якоби">Символ Якоби</h2>
+<p><strong>Символ Якоби</strong> — это обобщение символа Лежандра на
+случай, когда знаменатель является нечетным составным числом. Символ
+Якоби <span class="math inline">$(\frac{a}{n})$</span> определяется для
+целого числа <span class="math inline"><em>a</em></span> и нечетного
+натурального числа <span class="math inline"><em>n</em></span>.</p>
+<p>Если <span class="math inline"><em>n</em></span> — простое число, то
+символ Якоби совпадает с символом Лежандра. Символ Лежандра <span
+class="math inline">$(\frac{a}{p})$</span> определяется для целого числа
+<span class="math inline"><em>a</em></span> и простого числа <span
+class="math inline"><em>p</em></span> и указывает, является ли <span
+class="math inline"><em>a</em></span> квадратичным вычетом по модулю
+<span class="math inline"><em>p</em></span>.</p>
+<h3 id="свойства-символа-якоби">Свойства символа Якоби</h3>
+<ol type="1">
+<li><p><strong>Мультипликативность:</strong></p>
+<p><span class="math display">$$(\frac{ab}{n}) = (\frac{a}{n})
+(\frac{b}{n})$$</span></p></li>
+<li><p><strong>Симметрия:</strong></p>
+<p><span class="math display">$$(\frac{a}{n}) = (\frac{a \mod
+n}{n})$$</span></p></li>
+</ol>
+<hr />
+<ol start="3" type="1">
+<li><p><strong>Квадратичный закон взаимности:</strong></p>
+<p>Для нечетных натуральных чисел <span
+class="math inline"><em>a</em></span> и <span
+class="math inline"><em>b</em></span>: <span
+class="math display">$$(\frac{a}{b}) (\frac{b}{a}) =
+(-1)^{\frac{(a-1)(b-1)}{4}}$$</span></p></li>
+<li><p><strong>Свойства для <span
+class="math inline"><em>a</em> = −1</span> и <span
+class="math inline"><em>a</em> = 2</span>:</strong></p>
+<p><span class="math display">$$(\frac{-1}{n}) =
+(-1)^{\frac{n-1}{2}}$$</span></p>
+<p><span class="math display">$$(\frac{2}{n}) =
+(-1)^{\frac{n^2-1}{8}}$$</span></p></li>
+</ol>
+<h2 id="тест-соловея-штрассена">Тест Соловея-Штрассена</h2>
+<p>Тест Соловея-Штрассена использует символ Якоби и малую теорему Ферма
+для определения вероятности простоты числа.</p>
+<h3 id="алгоритм-действий-1">Алгоритм действий:</h3>
+<ol type="1">
+<li>Выбрать случайное число <span class="math inline"><em>a</em></span>
+такое, что <span
+class="math inline">1 ≤ <em>a</em> &lt; <em>n</em></span>.</li>
+<li>Вычислить символ Якоби <span
+class="math inline">$(\frac{a}{n})$</span>.</li>
+<li>Вычислить <span
+class="math inline"><em>a</em><sup>(<em>n</em> − 1)/2</sup> mod  <em>n</em></span>.</li>
+<li>Если <span class="math inline">$(\frac{a}{n}) \not\equiv a^{(n-1)/2}
+\mod n$</span>, то <span class="math inline"><em>n</em></span> —
+составное.</li>
+<li>Если <span class="math inline">$(\frac{a}{n}) \equiv a^{(n-1)/2}
+\mod n$</span>, то <span class="math inline"><em>n</em></span> вероятно
+простое.</li>
+</ol>
+<h3 id="сравнение-1">Сравнение:</h3>
+<ul>
+<li><strong>Плюсы:</strong> Более надежный, чем тест Ферма, так как не
+подвержен “числам Кармайкла”.</li>
+<li><strong>Минусы:</strong> Требует вычисления символа Якоби, что может
+быть сложнее.</li>
+</ul>
+<h2 id="тест-миллера-рабина">Тест Миллера-Рабина</h2>
+<p>Тест Миллера-Рабина — это вероятностный тест, основанный на
+расширении малой теоремы Ферма и использующий свойства квадратичных
+вычетов.</p>
+<h3 id="алгоритм-действий-2">Алгоритм действий:</h3>
+<ol type="1">
+<li>Представить <span class="math inline"><em>n</em> − 1</span> как
+<span class="math inline">2<sup><em>s</em></sup> ⋅ <em>d</em></span>,
+где <span class="math inline"><em>d</em></span> — нечетное.</li>
+<li>Выбрать случайное число <span class="math inline"><em>a</em></span>
+такое, что <span
+class="math inline">1 ≤ <em>a</em> &lt; <em>n</em></span>.</li>
+<li>Вычислить <span
+class="math inline"><em>a</em><sup><em>d</em></sup> mod  <em>n</em></span>.</li>
+<li>Если <span
+class="math inline"><em>a</em><sup><em>d</em></sup> ≡ 1 mod  <em>n</em></span>
+или <span
+class="math inline"><em>a</em><sup><em>d</em></sup> ≡ −1 mod  <em>n</em></span>,
+то <span class="math inline"><em>n</em></span> вероятно простое.</li>
+<li>Иначе, вычислить <span
+class="math inline"><em>a</em><sup>2<sup><em>r</em></sup> ⋅ <em>d</em></sup> mod  <em>n</em></span>
+для <span
+class="math inline"><em>r</em> = 1, 2, ..., <em>s</em> − 1</span>.</li>
+<li>Если для какого-то <span class="math inline"><em>r</em></span>
+выполняется <span
+class="math inline"><em>a</em><sup>2<sup><em>r</em></sup> ⋅ <em>d</em></sup> ≡ −1 mod  <em>n</em></span>,
+то <span class="math inline"><em>n</em></span> вероятно простое.</li>
+<li>Если ни одно из условий не выполняется, то <span
+class="math inline"><em>n</em></span> — составное.</li>
+</ol>
+<h3 id="сравнение-2">Сравнение:</h3>
+<ul>
+<li><strong>Плюсы:</strong> Один из самых надежных вероятностных тестов,
+не подвержен “числам Кармайкла”.</li>
+<li><strong>Минусы:</strong> Требует больше вычислений, чем тест
+Ферма.</li>
+</ul>
+<h2 id="вывод">Вывод:</h2>
+<ul>
+<li><strong>Тест Ферма</strong> — простой, но подвержен “числам
+Кармайкла”.</li>
+<li><strong>Тест Соловея-Штрассена</strong> — более надежный, чем Ферма,
+но требует вычисления символа Якоби.</li>
+<li><strong>Тест Миллера-Рабина</strong> — самый надежный из трех, но
+требует больше вычислений.</li>
+</ul>
+<p>Каждый из этих тестов дает вероятностный результат, и для
+подтверждения простоты числа обычно используют несколько итераций
+теста.</p>
+<h1 id="ход-работы">Ход работы</h1>
+<h2 id="подготовка">Подготовка</h2>
+<p>Так для тестирования работы кода я создал простой шаблон генерирующий
+наше случайное число для проверки, а также необходимые для каждого
+алгоритма коэффициент или параметр который гарантированно меньше
+исходного, но не меньше 1.</p>
+<hr />
+<figure id="fig:001">
+<img src="image/01.png" style="width:70.0%;height:40.0%"
+alt="Случайная тестовая группа" />
+<figcaption aria-hidden="true">Случайная тестовая группа</figcaption>
+</figure>
+<h2 id="алгоритм-теста-ферма">Алгоритм теста Ферма</h2>
+<figure id="fig:002">
+<img src="image/02.png" style="width:70.0%;height:40.0%"
+alt="Код теста Ферма" />
+<figcaption aria-hidden="true">Код теста Ферма</figcaption>
+</figure>
+<h2 id="результат-1">Результат 1</h2>
+<figure id="fig:003">
+<img src="image/03.png" style="width:70.0%;height:40.0%"
+alt="Результат шифра Цезаря" />
+<figcaption aria-hidden="true">Результат шифра Цезаря</figcaption>
+</figure>
+<h2 id="алгоритм-вычисления-символа-якоби">Алгоритм вычисления символа
+Якоби</h2>
+<p>Если посмотреть на полученный результаты может показаться что при
+данных значениях нет ни одного число которое при использовании теста
+Соловэя-Штрассена. Для проверки рассмотрим случай номер 5 при значениях
+n = 5 (число для проверки) и a = 3 (случайное число) оба при этом
+оказались простыми.</p>
+<ol type="1">
+<li>Начнём с символа Якоби: 3/5; 5 - простое и совпадает с символом
+Лежандра который вычисляем как 5/3 =&gt; 2/3 а, так как 2 = mod(3) и не
+является квадратом по модулю 3 то 2/3 = -1 =&gt; 3/5 =&gt; -1</li>
+<li>Теперь вычислим <span
+class="math inline"><em>a</em><sup>(<em>n</em> − 1)/2</sup> *  mod  <em>n</em></span>
+=&gt; <span class="math inline">3<sup>(5 − 1)/2</sup> *  mod  5</span>
+=&gt; <span
+class="math inline">3<sup>2</sup> * <em>m</em><em>o</em><em>d</em>5 = 4</span></li>
+<li>Сравним: -1 и 4 не ровны значит чисто по тесту Соловея-Штрассена при
+a = 3 и n = 5, n не простое. При других значениях <span
+class="math inline"><em>a</em></span> возможно он даст правильный ответ,
+но не здесь.</li>
+</ol>
+<hr />
+<figure id="fig:004">
+<img src="image/04.png" style="width:70.0%;height:40.0%"
+alt="Код вычисления символа Якоби" />
+<figcaption aria-hidden="true">Код вычисления символа Якоби</figcaption>
+</figure>
+<h2 id="результат-2">Результат 2</h2>
+<figure id="fig:005">
+<img src="image/05.png" style="width:70.0%;height:40.0%"
+alt="Результат вычисления символа Якоби" />
+<figcaption aria-hidden="true">Результат вычисления символа
+Якоби</figcaption>
+</figure>
+<h2 id="алгоритм-теста-соловэя-штрассена">Алгоритм теста
+Соловэя-Штрассена</h2>
+<figure id="fig:006">
+<img src="image/06.png" style="width:70.0%;height:40.0%"
+alt="Код теста Соловэя-Штрассена" />
+<figcaption aria-hidden="true">Код теста Соловэя-Штрассена</figcaption>
+</figure>
+<h2 id="результат-3">Результат 3</h2>
+<figure id="fig:007">
+<img src="image/07.png" style="width:70.0%;height:40.0%"
+alt="Результат теста Соловэя-Штрассена" />
+<figcaption aria-hidden="true">Результат теста
+Соловэя-Штрассена</figcaption>
+</figure>
+<h2 id="алгоритм-теста-миллера-рабина">Алгоритм теста
+Миллера-Рабина</h2>
+<figure id="fig:008">
+<img src="image/08.png" style="width:70.0%;height:40.0%"
+alt="Код теста Миллера-Рабина 1" />
+<figcaption aria-hidden="true">Код теста Миллера-Рабина 1</figcaption>
+</figure>
+<hr />
+<figure id="fig:009">
+<img src="image/09.png" style="width:70.0%;height:40.0%"
+alt="Код теста Миллера-Рабина 2" />
+<figcaption aria-hidden="true">Код теста Миллера-Рабина 2</figcaption>
+</figure>
+<h2 id="результат-4">Результат 4</h2>
+<figure id="fig:010">
+<img src="image/10.png" style="width:70.0%;height:40.0%"
+alt="Результат теста Миллера-Рабина" />
+<figcaption aria-hidden="true">Результат теста
+Миллера-Рабина</figcaption>
+</figure>
+<h1 id="выводы-по-проделанной-работе">Выводы по проделанной работе</h1>
+<h2 id="вывод-1">Вывод</h2>
+<p>В ходе выполнения лабораторной работе выли изучены такие способы
+определение простоты числа как алгоритм теста Ферма, алгоритм теста
+Миллера-Рабина и алгоритм теста Соловэя-Штрассена, и алгоритм вычисления
+символа Якоби.</p>
+</body>
+</html>
