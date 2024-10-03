@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Евдокимов Максим Михайлович. Группа - НФИмд-01-24." />
+  <title>Лабораторная работа №6: Презентация.</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  
+  
+  <span class="citation"
+  data-cites="ignorenonframefalse">@ignorenonframefalse</span>
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №6: Презентация.</h1>
+<p class="subtitle">Разложение чисел на множители.</p>
+<p class="author">Евдокимов Максим Михайлович. Группа - НФИмд-01-24.</p>
+<p class="date">03 октября, 2024, Москва, Россия</p>
+</header>
+<h1 id="цели-и-задачи-работы">Цели и задачи работы</h1>
+<h2 id="цель-лабораторной-работы">Цель лабораторной работы</h2>
+<p>Изучить представленные способы разложение чисел на множители и
+реализовать их в коде.</p>
+<h2 id="задание">Задание</h2>
+<p>Реализовать рассмотренные алгоритмы программно (алгоритм реализующий
+p-метод Полларда).</p>
+<h2 id="метод-разложения-числа-на-множители-p-метод-полларда">Метод
+разложения числа на множители: p-метод Полларда</h2>
+<p>p-метод Полларда (метод ρ-Полларда) — это вероятностный алгоритм
+факторизации целых чисел, который находит нетривиальный делитель числа
+<span class="math inline"><em>n</em></span> за время, пропорциональное
+<span class="math inline">$\sqrt[4]{n}$</span>.</p>
+<p>Алгоритм основан на поиске цикла в псевдослучайной последовательности
+чисел, получаемой с помощью некоторой функции <span
+class="math inline"><em>f</em>(<em>x</em>)</span>, примененной к числу
+<span class="math inline"><em>x</em></span> по модулю <span
+class="math inline"><em>n</em></span>.</p>
+<hr />
+<h3 id="алгоритм">Алгоритм:</h3>
+<ol type="1">
+<li>Выбираем начальное значение <span
+class="math inline"><em>x</em><sub>0</sub></span> и функцию <span
+class="math inline"><em>f</em>(<em>x</em>)</span>, например, <span
+class="math inline"><em>f</em>(<em>x</em>) = <em>x</em><sup>2</sup> + 1</span>.</li>
+<li>Строим две последовательности чисел:
+<ul>
+<li><span class="math inline"><em>x</em><sub><em>i</em></sub></span> —
+последовательность, получаемая итеративным применением функции <span
+class="math inline"><em>f</em>(<em>x</em>)</span>: <span
+class="math inline"><em>x</em><sub><em>i</em> + 1</sub> = <em>f</em>(<em>x</em><sub><em>i</em></sub>) mod  <em>n</em></span>.</li>
+<li><span class="math inline"><em>y</em><sub><em>i</em></sub></span> —
+последовательность, получаемая с задержкой: <span
+class="math inline"><em>y</em><sub><em>i</em> + 1</sub> = <em>f</em>(<em>f</em>(<em>y</em><sub><em>i</em></sub>)) mod  <em>n</em></span>.</li>
+</ul></li>
+<li>Вычисляем наибольший общий делитель <span
+class="math inline">НОД(|<em>x</em><sub><em>i</em></sub> − <em>y</em><sub><em>i</em></sub>|, <em>n</em>)</span>
+на каждом шаге.</li>
+<li>Если <span class="math inline">НОД ≠ 1</span> и <span
+class="math inline">НОД ≠ <em>n</em></span>, то мы нашли нетривиальный
+делитель <span class="math inline"><em>n</em></span>.</li>
+<li>Если <span class="math inline">НОД = <em>n</em></span>, то алгоритм
+завершился неудачно, и нужно выбрать другое начальное значение <span
+class="math inline"><em>x</em><sub>0</sub></span> или функцию <span
+class="math inline"><em>f</em>(<em>x</em>)</span>.</li>
+</ol>
+<hr />
+<h3 id="особенности">Особенности:</h3>
+<ul>
+<li><strong>Эффективность:</strong> В среднем алгоритм работает за время
+<span class="math inline"><em>O</em>(<em>n</em><sup>1/4</sup>)</span>,
+что значительно быстрее полного перебора делителей.</li>
+<li><strong>Вероятностный:</strong> Алгоритм не гарантирует нахождение
+делителя, и в худшем случае может работать долго.</li>
+<li><strong>Простота реализации:</strong> Алгоритм легко реализуется и
+требует небольшого объема памяти.</li>
+<li><strong>Применимость:</strong> Метод хорошо подходит для
+факторизации чисел среднего размера (до 100 десятичных цифр).</li>
+</ul>
+<hr />
+<h3 id="пример">Пример:</h3>
+<p>Рассмотрим число <span
+class="math inline"><em>n</em> = 8051</span>.</p>
+<ol type="1">
+<li>Выбираем <span class="math inline"><em>x</em><sub>0</sub> = 2</span>
+и <span
+class="math inline"><em>f</em>(<em>x</em>) = <em>x</em><sup>2</sup> + 1</span>.</li>
+<li>Строим последовательности:
+<ul>
+<li><span
+class="math inline"><em>x</em><sub>1</sub> = <em>f</em>(2) = 5</span></li>
+<li><span
+class="math inline"><em>y</em><sub>1</sub> = <em>f</em>(<em>f</em>(2)) = 26</span></li>
+</ul></li>
+<li>Вычисляем <span
+class="math inline">НОД(|5 − 26|, 8051) = 97</span>.</li>
+<li>97 — нетривиальный делитель 8051.</li>
+</ol>
+<h3 id="заключение">Заключение:</h3>
+<p>P-метод Полларда — это эффективный и простой в реализации алгоритм
+факторизации, который широко используется в криптографии и других
+областях.</p>
+<h1 id="ход-работы">Ход работы</h1>
+<h2 id="функция-p-метод-полларда">Функция p-метод Полларда</h2>
+<figure id="fig:001">
+<img src="image/01.png" style="width:60.0%;height:40.0%"
+alt="Функция p-метод Полларда и библиотека для простых чисел" />
+<figcaption aria-hidden="true">Функция p-метод Полларда и библиотека для
+простых чисел</figcaption>
+</figure>
+<h2 id="функция-разложения-и-проверки-числа-n">Функция разложения и
+проверки числа n</h2>
+<figure id="fig:002">
+<img src="image/02.png" style="width:60.0%;height:40.0%"
+alt="Функция разложения и проверки числа n" />
+<figcaption aria-hidden="true">Функция разложения и проверки числа
+n</figcaption>
+</figure>
+<h2 id="результаты">Результаты</h2>
+<figure id="fig:003">
+<img src="image/03.png" style="width:60.0%;height:40.0%"
+alt="Тестовые значения" />
+<figcaption aria-hidden="true">Тестовые значения</figcaption>
+</figure>
+<hr />
+<figure id="fig:004">
+<img src="image/04.png" style="width:60.0%;height:40.0%"
+alt="Вызов функции и тестовая группа 1" />
+<figcaption aria-hidden="true">Вызов функции и тестовая группа
+1</figcaption>
+</figure>
+<hr />
+<figure id="fig:005">
+<img src="image/05.png" style="width:60.0%;height:40.0%"
+alt="тестовая группа 2 и тестовая группа 3" />
+<figcaption aria-hidden="true">тестовая группа 2 и тестовая группа
+3</figcaption>
+</figure>
+<h1 id="выводы-по-проделанной-работе">Выводы по проделанной работе</h1>
+<h2 id="вывод">Вывод</h2>
+<p>В ходе выполнения лабораторной работы я изучил способ нахождение всех
+множителей числа алгоритмом реализующим p-метод Полларда.</p>
+</body>
+</html>
