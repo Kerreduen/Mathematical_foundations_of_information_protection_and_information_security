@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru-RU" xml:lang="ru-RU">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Евдокимов Максим Михайлович. Группа - НФИмд-01-24." />
+  <title>Лабораторная работа №7: Презентация.</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  
+  
+  <span class="citation"
+  data-cites="ignorenonframefalse">@ignorenonframefalse</span>
+  
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Лабораторная работа №7: Презентация.</h1>
+<p class="subtitle">Дискретное логарифмирование в конечном поле.</p>
+<p class="author">Евдокимов Максим Михайлович. Группа - НФИмд-01-24.</p>
+<p class="date">04 октября, 2024, Москва, Россия</p>
+</header>
+<h1 id="цели-и-задачи-работы">Цели и задачи работы</h1>
+<h2 id="цель-лабораторной-работы">Цель лабораторной работы</h2>
+<p>Вычисление дискретных логарифмов в конечном поле.</p>
+<h2 id="задание">Задание</h2>
+<p>Реализовать алгоритм, реализующий р-Метод Полларда для задач
+дискретного логарифмирования программно.</p>
+<h1 id="теоретическое-введение">Теоретическое введение</h1>
+<h2
+id="алгоритм-р-метод-полларда-для-задач-дискретного-логарифмирования">алгоритм
+р-Метод Полларда для задач дискретного логарифмирования</h2>
+<p>p-Метод Полларда (Pollard’s rho method for discrete logarithms) — это
+алгоритм, используемый для решения задачи дискретного логарифмирования в
+конечных полях. Задача дискретного логарифмирования заключается в
+нахождении целого числа <span class="math inline"><em>x</em></span>
+такого, что:</p>
+<p><span
+class="math display"><em>g</em><sup><em>x</em></sup> ≡ <em>h</em> (mod  <em>p</em>)</span></p>
+<p>где <span class="math inline"><em>g</em></span>, <span
+class="math inline"><em>h</em></span>, и <span
+class="math inline"><em>p</em></span> — известные целые числа, а <span
+class="math inline"><em>p</em></span> — простое число.</p>
+<hr />
+<h3 id="основные-шаги-алгоритма">Основные шаги алгоритма</h3>
+<ol type="1">
+<li><strong>Разделение последовательности</strong>:
+<ul>
+<li>Последовательность <span
+class="math inline">{<em>g</em><sup>0</sup>, <em>g</em><sup>1</sup>, <em>g</em><sup>2</sup>, ..., <em>g</em><sup><em>p</em> − 1</sup>}</span>
+разбивается на три подмножества <span
+class="math inline"><em>S</em><sub>0</sub></span>, <span
+class="math inline"><em>S</em><sub>1</sub></span>, и <span
+class="math inline"><em>S</em><sub>2</sub></span> на основе некоторого
+правила. Например, можно использовать остаток от деления на 3.</li>
+</ul></li>
+<li><strong>Функция перехода</strong>:
+<ul>
+<li>Определяется функция перехода <span
+class="math inline"><em>f</em>(<em>x</em>)</span>, которая перемещает
+элементы между подмножествами. Обычно используется следующая
+функция:</li>
+</ul></li>
+</ol>
+<p><span class="math display">$$f(x) = \begin{cases}
+x \cdot g \pmod{p} &amp; \text{если } x \in S_0, \\
+x \cdot h \pmod{p} &amp; \text{если } x \in S_1, \\
+x^2 \pmod{p} &amp; \text{если } x \in S_2.
+\end{cases}$$</span></p>
+<hr />
+<ol start="3" type="1">
+<li><strong>Поиск коллизии</strong>:
+<ul>
+<li>Используем метод “черепахи и зайца” для поиска коллизии.</li>
+</ul></li>
+<li><strong>Решение уравнения</strong>:
+<ul>
+<li>Пусть найдены <span class="math inline"><em>i</em> = 5</span> и
+<span class="math inline"><em>j</em> = 10</span>. Тогда: <span
+class="math display">5<sup>5</sup> ≡ 3 (mod  7)</span> Проверяем: <span
+class="math display">5<sup>5</sup> = 3125 ≡ 3 (mod  7)</span> Таким
+образом, <span class="math inline"><em>x</em> = 5</span> является
+решением.</li>
+</ul></li>
+</ol>
+<h1 id="ход-работы">Ход работы</h1>
+<h2
+id="расширенный-алгоритм-евклида-для-нахождения-обратного-элемента">Расширенный
+алгоритм Евклида для нахождения обратного элемента</h2>
+<figure id="fig:001">
+<img src="image/01.png" style="width:50.0%;height:50.0%"
+alt="Расширенный алгоритм Евклида" />
+<figcaption aria-hidden="true">Расширенный алгоритм Евклида</figcaption>
+</figure>
+<h2
+id="функция-для-вычисления-следующего-элемента-в-последовательности">Функция
+для вычисления следующего элемента в последовательности</h2>
+<figure id="fig:002">
+<img src="image/02.png" style="width:50.0%;height:50.0%"
+alt="Функция для вычисления часть 1" />
+<figcaption aria-hidden="true">Функция для вычисления часть
+1</figcaption>
+</figure>
+<hr />
+<figure id="fig:003">
+<img src="image/03.png" style="width:50.0%;height:50.0%"
+alt="Функция для вычисления часть 2" />
+<figcaption aria-hidden="true">Функция для вычисления часть
+2</figcaption>
+</figure>
+<h2 id="тестовые-значение">Тестовые значение</h2>
+<figure id="fig:004">
+<img src="image/04.png" style="width:70.0%;height:50.0%"
+alt="Стартовые значения и переменные" />
+<figcaption aria-hidden="true">Стартовые значения и
+переменные</figcaption>
+</figure>
+<h2 id="результаты-и-тесты">Результаты и тесты</h2>
+<figure id="fig:005">
+<img src="image/05.png" style="width:60.0%;height:50.0%"
+alt="Вызов и вывод результатов" />
+<figcaption aria-hidden="true">Вызов и вывод результатов</figcaption>
+</figure>
+<hr />
+<figure id="fig:006">
+<img src="image/06.png" style="width:50.0%;height:50.0%"
+alt="Проверка по a^x = b (mod p)" />
+<figcaption aria-hidden="true">Проверка по a^x = b (mod p)</figcaption>
+</figure>
+<hr />
+<figure id="fig:007">
+<img src="image/07.png" style="width:50.0%;height:50.0%"
+alt="Результаты проверки" />
+<figcaption aria-hidden="true">Результаты проверки</figcaption>
+</figure>
+<h1 id="выводы-по-проделанной-работе">Выводы по проделанной работе</h1>
+<h2 id="вывод">Вывод</h2>
+<p>В ходе выполнение лабораторной работы был изучен и реализован способ
+определения дискретного логарифма для дискретного логарифмирования в
+конечном поле с использованием алгоритм, реализующий р-Метод Полларда
+для задач дискретного логарифмирования.</p>
+</body>
+</html>
